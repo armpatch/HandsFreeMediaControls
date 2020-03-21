@@ -6,7 +6,7 @@ interface MainContract {
     }
 
     interface View : BaseView<Presenter> {
-        fun startCyclingOptions()
-        fun stopCyclingOptions()
+        fun startAction()
+        fun stopAction()
     }
 }
