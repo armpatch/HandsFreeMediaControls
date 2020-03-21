@@ -13,7 +13,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainContract.View {
+
+    internal lateinit var presenter: MainContract.Presenter
 
     private lateinit var sensorManager: SensorManager
     private lateinit var proximitySensor: Sensor
@@ -29,9 +31,29 @@ class MainActivity : AppCompatActivity() {
         textView = findViewById(R.id.text)
         button = findViewById(R.id.button)
 
+        setPresenter(MainPresenter(this))
+
         setupAudioManager()
         setupProximitySensor()
     }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun startCyclingOptions() {
+        TODO("not implemented")
+    }
+
+    override fun stopCyclingOptions() {
+        TODO("not implemented")
+    }
+
+    override fun setPresenter(presenter: MainContract.Presenter) {
+        this.presenter = presenter
+    }
+
 
     private fun setupAudioManager() {
         audioManager = getSystemService(Activity.AUDIO_SERVICE) as AudioManager
@@ -68,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCloseProximity() {
-        button.isPressed  = true
+        button.isPressed = true
         togglePlayPause()
     }
 
