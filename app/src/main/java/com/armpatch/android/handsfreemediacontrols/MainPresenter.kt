@@ -58,12 +58,12 @@ class MainPresenter(view: MainContract.View, private val activityContext: Contex
     }
 
     private fun onCloseProximity() {
-        view?.startAction()
+        view?.cycleToNextActionIcon()
         //toggleMediaPlayPause()
     }
 
     private fun onFarProximity() {
-        view?.stopAction()
+        view?.selectCurrentActionIcon()
     }
 
     private fun toggleMediaPlayPause() {

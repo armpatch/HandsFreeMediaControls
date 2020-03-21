@@ -11,11 +11,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var presenter: MainContract.Presenter
 
     private lateinit var progressCircle: ProgressBar
+    private lateinit var image: CyclingImageView
     private lateinit var progressAnimator: ObjectAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        image = findViewById(R.id.image)
 
         setupProgressCircle()
 
@@ -36,11 +39,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onDestroy()
     }
 
-    override fun startAction() {
+    override fun cycleToNextActionIcon() {
         progressAnimator.start()
+        image.cycleImage()
     }
 
-    override fun stopAction() {
+    override fun selectCurrentActionIcon() {
         progressAnimator.cancel()
         progressCircle.progress = 0
     }
