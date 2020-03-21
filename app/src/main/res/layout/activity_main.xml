@@ -18,4 +18,12 @@
         android:textSize="30sp"
         />
 
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/button_color_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
