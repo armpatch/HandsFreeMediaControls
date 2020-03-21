@@ -1,5 +1,6 @@
 package com.armpatch.android.handsfreemediacontrols
 
+import android.app.Activity
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -7,10 +8,10 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.AudioManager
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +29,12 @@ class MainActivity : AppCompatActivity() {
         textView = findViewById(R.id.text)
         button = findViewById(R.id.button)
 
+        setupAudioManager()
         setupProximitySensor()
+    }
+
+    private fun setupAudioManager() {
+        audioManager = getSystemService(Activity.AUDIO_SERVICE) as AudioManager
     }
 
     private fun setupProximitySensor() {
@@ -42,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-
     private var proximitySensorEventListener: SensorEventListener = object : SensorEventListener {
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
 
@@ -53,20 +58,29 @@ class MainActivity : AppCompatActivity() {
 
                 if (event.sensor.type == Sensor.TYPE_PROXIMITY) {
                     if (event.values[0] == 0f) {
-                        close()
+                        onCloseProximity()
                     } else {
-                        far()
+                        onFarProximity()
                     }
                 }
             }
         }
     }
 
-    private fun close() {
+    private fun onCloseProximity() {
         button.isPressed  = true
+        togglePlayPause()
     }
 
-    private fun far() {
+    private fun onFarProximity() {
         button.isPressed = false
+    }
+
+    private fun togglePlayPause() {
+        val eventDown = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
+        val eventUp = KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
+
+        audioManager.dispatchMediaKeyEvent(eventDown)
+        audioManager.dispatchMediaKeyEvent(eventUp)
     }
 }
