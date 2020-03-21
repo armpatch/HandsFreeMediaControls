@@ -1,26 +1,34 @@
 package com.armpatch.android.handsfreemediacontrols
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.TextView
+import android.view.animation.LinearInterpolator
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var presenter: MainContract.Presenter
 
-    private lateinit var textView: TextView
-    private lateinit var button: ImageButton
+    private lateinit var progressCircle: ProgressBar
+    private lateinit var progressAnimator: ObjectAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        textView = findViewById(R.id.text)
-        button = findViewById(R.id.button)
+        setupProgressCircle()
 
         setPresenter(MainPresenter(this, this))
         presenter.onCreate()
+    }
+
+    private fun setupProgressCircle() {
+        progressCircle = findViewById(R.id.progress_circle)
+        progressCircle.max = 100
+        progressAnimator = ObjectAnimator.ofInt(progressCircle, "progress", 0, 100)
+        progressAnimator.duration = 1000
+        progressAnimator.interpolator = LinearInterpolator()
     }
 
     override fun onDestroy() {
@@ -29,11 +37,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun startAction() {
-        button.isPressed = true
+        progressAnimator.start()
     }
 
     override fun stopAction() {
-        button.isPressed = false
+        progressAnimator.cancel()
+        progressCircle.progress = 0
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {
