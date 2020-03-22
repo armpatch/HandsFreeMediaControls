@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var presenter: MainContract.Presenter
 
-    private lateinit var progressCircle: ProgressBar
+    private lateinit var progressBar: ProgressBar
     private lateinit var image: CyclingImageView
     private lateinit var progressAnimator: ObjectAnimator
 
@@ -20,16 +20,16 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         image = findViewById(R.id.image)
 
-        setupProgressCircle()
+        setupProgressbar()
 
         setPresenter(MainPresenter(this, this))
         presenter.onCreate()
     }
 
-    private fun setupProgressCircle() {
-        progressCircle = findViewById(R.id.progress_circle)
-        progressCircle.max = 100
-        progressAnimator = ObjectAnimator.ofInt(progressCircle, "progress", 0, 100)
+    private fun setupProgressbar() {
+        progressBar = findViewById(R.id.progress_circle)
+        progressBar.max = 100
+        progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", 0, 100)
         progressAnimator.duration = 1000
         progressAnimator.interpolator = LinearInterpolator()
     }
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun selectCurrentActionIcon() {
         progressAnimator.cancel()
-        progressCircle.progress = 0
+        progressBar.progress = 0
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {
