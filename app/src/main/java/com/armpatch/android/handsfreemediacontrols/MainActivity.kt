@@ -11,15 +11,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var presenter: MainContract.Presenter
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var image: CyclingImageView
+    private lateinit var imageCycler: ImageCycler
     private lateinit var progressAnimator: ObjectAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        image = findViewById(R.id.image)
-
+        imageCycler = ImageCycler(findViewById(R.id.image_cycler))
         setupProgressbar()
 
         setPresenter(MainPresenter(this, this))
@@ -39,9 +38,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onDestroy()
     }
 
-    override fun cycleToNextActionIcon() {
+    override fun startCycling() {
         progressAnimator.start()
-        image.cycleImage()
+        imageCycler.startCycling()
     }
 
     override fun selectCurrentActionIcon() {

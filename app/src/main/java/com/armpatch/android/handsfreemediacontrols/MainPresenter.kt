@@ -20,8 +20,7 @@ class MainPresenter(view: MainContract.View, private val activityContext: Contex
     }
 
     override fun onCloseProximity() {
-        view?.cycleToNextActionIcon()
-        mediaPlayback.playPause()
+        view?.startCycling()
     }
 
     override fun onFarProximity() {

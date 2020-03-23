@@ -6,7 +6,7 @@ interface MainContract {
     }
 
     interface View : BaseView<Presenter> {
-        fun cycleToNextActionIcon()
+        fun startCycling()
         fun selectCurrentActionIcon()
     }
 }
