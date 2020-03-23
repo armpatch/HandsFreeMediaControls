@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, MediaActionSelector
         setContentView(R.layout.activity_main)
 
         mediaActionSelector = MediaActionSelector(findViewById(R.id.image_cycler))
+        mediaActionSelector.setActionListener(this)
 
         setPresenter(MainPresenter(this, this))
         presenter.onCreate()

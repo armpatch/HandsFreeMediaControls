@@ -18,6 +18,8 @@ class MediaActionSelector(container: View) {
     private var actionRequested = false
     private var cycling = false
 
+    private var actionListener: MediaActionListener? = null
+
     interface MediaActionListener {
         fun playPause()
         fun nextTrack()
@@ -33,6 +35,10 @@ class MediaActionSelector(container: View) {
                 cycleImageAfterDelay(transitionDelay)
             }
         }
+    }
+
+    fun setActionListener(actionListener: MediaActionListener) {
+        this.actionListener = actionListener
     }
 
     fun startCycling() {
@@ -82,15 +88,15 @@ class MediaActionSelector(container: View) {
     }
 
     private fun playPause() {
-        Log.d(GLOBAL_TAG, "----    PLAY/PAUSE    ----")
+        actionListener?.playPause()
     }
 
     private fun nextTrack() {
-        Log.d(GLOBAL_TAG, "----       NEXT       ----")
+        actionListener?.nextTrack()
     }
 
     private fun previousTrack() {
-        Log.d(GLOBAL_TAG, "----       BACK       ----")
+        actionListener?.previousTrack()
     }
 
 }
