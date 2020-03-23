@@ -7,13 +7,13 @@ import android.widget.ImageView
 
 class ImageCycler(container: View) {
 
-    private val playPauseImage: ImageView = container.findViewById(R.id.pause_icon)
-    private val nextImage: ImageView = container.findViewById(R.id.next_icon)
-    private val backImage: ImageView = container.findViewById(R.id.back_icon)
+    private val playPauseTrackImage: ImageView = container.findViewById(R.id.pause_icon)
+    private val skipTrackImage: ImageView = container.findViewById(R.id.next_icon)
+    private val previousTrackImage: ImageView = container.findViewById(R.id.back_icon)
     private var currentlyVisibleImage: ImageView? = null
 
     private val myHandler: Handler = Handler()
-    private val transitionDelay: Long = 1000
+    private val transitionDelay: Long = 800
 
     private var actionRequested = false
     private var cycling = false
@@ -22,9 +22,9 @@ class ImageCycler(container: View) {
         Log.d(GLOBAL_TAG, "--------Next")
 
         if (actionRequested) {
-            playPause()
+            sendActionAssociatedWith(currentlyVisibleImage)
         } else {
-            show(nextImage)
+            show(skipTrackImage)
             myHandler.postDelayed(showMediaBack, transitionDelay)
         }
     }
@@ -33,16 +33,16 @@ class ImageCycler(container: View) {
         Log.d(GLOBAL_TAG, "------------------Back")
 
         if (actionRequested) {
-            nextTrack()
+            sendActionAssociatedWith(currentlyVisibleImage)
         } else {
-            show(backImage)
+            show(previousTrackImage)
             myHandler.postDelayed(hideMediaBack, transitionDelay)
         }
     }
 
     private val hideMediaBack = Runnable {
         if (actionRequested) {
-            previousTrack()
+            sendActionAssociatedWith(currentlyVisibleImage)
         } else {
             hideAllImages()
         }
@@ -52,13 +52,13 @@ class ImageCycler(container: View) {
         Log.d(GLOBAL_TAG, "Pause")
         cycling = true
         actionRequested = false
-        show(playPauseImage)
+        show(playPauseTrackImage)
         myHandler.postDelayed(showMediaNext, transitionDelay)
     }
 
     fun stopCycling() {
         if (cycling) {
-            Log.d(GLOBAL_TAG, "----    ACTION SELECTED    ----")
+            Log.d(GLOBAL_TAG, "----    STOP CYCLING    ----")
             cycling = false
             actionRequested = true
         }
@@ -72,10 +72,19 @@ class ImageCycler(container: View) {
         current.visibility = View.VISIBLE
     }
 
+    private fun sendActionAssociatedWith(mediaImage: ImageView?) {
+        hideAllImages()
+        when (mediaImage) {
+            playPauseTrackImage -> playPause()
+            skipTrackImage -> nextTrack()
+            previousTrackImage -> previousTrack()
+        }
+    }
+
     private fun hideAllImages() {
-        playPauseImage.visibility = View.INVISIBLE
-        nextImage.visibility = View.INVISIBLE
-        backImage.visibility = View.INVISIBLE
+        playPauseTrackImage.visibility = View.INVISIBLE
+        skipTrackImage.visibility = View.INVISIBLE
+        previousTrackImage.visibility = View.INVISIBLE
     }
 
     private fun playPause() {
@@ -89,28 +98,6 @@ class ImageCycler(container: View) {
     private fun previousTrack() {
         Log.d(GLOBAL_TAG, "----       BACK       ----")
     }
-
-
-
-
-//    private val scaleX: PropertyValuesHolder = PropertyValuesHolder.ofFloat("scaleX", 0f, 1.0f)
-//    private val scaleY: PropertyValuesHolder = PropertyValuesHolder.ofFloat("scaleY", 0f, 1.0f)
-//    private val sizeAnimator: ObjectAnimator =
-//        ObjectAnimator.ofPropertyValuesHolder(this, scaleX, scaleY)
-
-
-//    private val animatorSet: AnimatorSet = AnimatorSet()
-
-
-    /*   Handler handler = new Handler();
-       int delay = 1000; //milliseconds
-
-       handler.postDelayed(new Runnable(){
-           public void run(){
-               //do something
-               handler.postDelayed(this, delay);
-           }
-       }, delay);  */
 
 }
 
