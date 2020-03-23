@@ -3,7 +3,7 @@ package com.armpatch.android.handsfreemediacontrols
 import android.content.Context
 
 class MainPresenter(view: MainContract.View, private val activityContext: Context)
-    : MainContract.Presenter, ProximitySensor.ProximityListener {
+    : MainContract.Presenter, ProximitySensor.Listener {
 
     private var view: MainContract.View? = view
 

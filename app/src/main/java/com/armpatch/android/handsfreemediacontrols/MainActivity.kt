@@ -3,7 +3,7 @@ package com.armpatch.android.handsfreemediacontrols
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), MainContract.View, MediaActionSelector.MediaActionListener{
+class MainActivity : AppCompatActivity(), MainContract.View, MediaActionSelector.Listener{
 
     private lateinit var presenter: MainContract.Presenter
     private lateinit var mediaActionSelector: MediaActionSelector
@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, MediaActionSelector
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mediaActionSelector = MediaActionSelector(findViewById(R.id.image_cycler))
+        mediaActionSelector = MediaActionSelector(findViewById(R.id.media_action_selector))
         mediaActionSelector.setActionListener(this)
 
         setPresenter(MainPresenter(this, this))
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, MediaActionSelector
     }
 
     override fun startCycling() {
-        mediaActionSelector.startCycling()
+        mediaActionSelector.startCyclingActions()
     }
 
     override fun stopCycling() {

@@ -18,49 +18,50 @@ class MediaActionSelector(container: View) {
     private var actionRequested = false
     private var cycling = false
 
-    private var actionListener: MediaActionListener? = null
+    private var actionListener: Listener? = null
 
-    interface MediaActionListener {
+    interface Listener {
         fun playPause()
         fun nextTrack()
         fun previousTrack()
     }
 
-    private val imageCycleRunnable = Runnable {
-        Log.d(GLOBAL_TAG, "--------Universal Runnable start -------")
+    private val imageChangingRunnable = Runnable {
+        Log.d(GLOBAL_TAG, "imageChangingRunnable : Start")
 
         if (!actionRequested) {
             showNextImage()
             if (imageIndex < mediaImages.size) {
-                cycleImageAfterDelay(transitionDelay)
+                changeImageAfterDelay(transitionDelay)
             }
         }
     }
 
-    fun setActionListener(actionListener: MediaActionListener) {
+    fun setActionListener(actionListener: Listener) {
         this.actionListener = actionListener
     }
 
-    fun startCycling() {
-        Log.d(GLOBAL_TAG, "Pause")
+    fun startCyclingActions() {
+        Log.d(GLOBAL_TAG, "startCyclingActions")
         cycling = true
         actionRequested = false
 
         imageIndex = -1
-        cycleImageAfterDelay(0)
+        changeImageAfterDelay(0)
     }
 
     fun stopCycling() {
         if (cycling) {
-            Log.d(GLOBAL_TAG, "----    STOP CYCLING    ----")
+            Log.d(GLOBAL_TAG, "stopCyclingActions")
             cycling = false
             actionRequested = true
-            broadcastAction()
+            hideAllImages()
+            sendActionCallback()
         }
     }
 
-    private fun cycleImageAfterDelay (delay: Long) {
-        myHandler.postDelayed(imageCycleRunnable, delay)
+    private fun changeImageAfterDelay (delay: Long) {
+        myHandler.postDelayed(imageChangingRunnable, delay)
     }
 
     private fun showNextImage() {
@@ -72,8 +73,7 @@ class MediaActionSelector(container: View) {
         }
     }
 
-    private fun broadcastAction() {
-        hideAllImages()
+    private fun sendActionCallback() {
         when (imageIndex) {
             0 -> playPause()
             1 -> nextTrack()

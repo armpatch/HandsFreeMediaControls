@@ -6,7 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 
-class ProximitySensor(private val activityContext: Context, private val listener: ProximityListener) {
+class ProximitySensor(private val activityContext: Context, private val listener: Listener) {
 
     private lateinit var sensorManager: SensorManager
     private lateinit var proximitySensor: Sensor
@@ -24,7 +24,7 @@ class ProximitySensor(private val activityContext: Context, private val listener
         }
     }
 
-    interface ProximityListener {
+    interface Listener {
         fun onCloseProximity()
         fun onFarProximity()
     }
@@ -44,6 +44,5 @@ class ProximitySensor(private val activityContext: Context, private val listener
             SensorManager.SENSOR_DELAY_UI
         )
     }
-
 
 }

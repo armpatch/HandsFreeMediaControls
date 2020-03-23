@@ -9,7 +9,7 @@
     >
 
     <include
-        android:id="@+id/image_cycler"
+        android:id="@+id/media_action_selector"
         layout="@layout/content_media_action_selector"
         android:layout_width="200dp"
         android:layout_height="200dp"
