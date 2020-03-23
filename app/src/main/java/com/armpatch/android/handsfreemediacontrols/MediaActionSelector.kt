@@ -5,20 +5,24 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 
-class ImageCycler(container: View) {
+class MediaActionSelector(container: View) {
 
     private val playPauseTrackImage: ImageView = container.findViewById(R.id.pause_icon)
     private val skipTrackImage: ImageView = container.findViewById(R.id.next_icon)
     private val previousTrackImage: ImageView = container.findViewById(R.id.back_icon)
-
     private val mediaImages = listOf(playPauseTrackImage, skipTrackImage, previousTrackImage)
     private var imageIndex = -1
 
     private val myHandler: Handler = Handler()
     private val transitionDelay: Long = 800
-
     private var actionRequested = false
     private var cycling = false
+
+    interface MediaActionListener {
+        fun playPause()
+        fun nextTrack()
+        fun previousTrack()
+    }
 
     private val imageCycleRunnable = Runnable {
         Log.d(GLOBAL_TAG, "--------Universal Runnable start -------")
@@ -90,4 +94,3 @@ class ImageCycler(container: View) {
     }
 
 }
-

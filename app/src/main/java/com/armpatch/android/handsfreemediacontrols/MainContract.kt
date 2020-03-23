@@ -2,11 +2,13 @@ package com.armpatch.android.handsfreemediacontrols
 
 interface MainContract {
     interface Presenter : BasePresenter {
-        //TODO may action to be called from view
+        fun mediaPlayPause()
+        fun mediaNextTrack()
+        fun mediaPreviousTrack()
     }
 
     interface View : BaseView<Presenter> {
         fun startCycling()
-        fun selectCurrentActionIcon()
+        fun stopCycling()
     }
 }

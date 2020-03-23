@@ -1,36 +1,21 @@
 package com.armpatch.android.handsfreemediacontrols
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.view.animation.LinearInterpolator
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View, MediaActionSelector.MediaActionListener{
 
     private lateinit var presenter: MainContract.Presenter
-
-    private lateinit var progressBar: ProgressBar
-    private lateinit var imageCycler: ImageCycler
-    private lateinit var progressAnimator: ObjectAnimator
+    private lateinit var mediaActionSelector: MediaActionSelector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        imageCycler = ImageCycler(findViewById(R.id.image_cycler))
-        setupProgressbar()
+        mediaActionSelector = MediaActionSelector(findViewById(R.id.image_cycler))
 
         setPresenter(MainPresenter(this, this))
         presenter.onCreate()
-    }
-
-    private fun setupProgressbar() {
-        progressBar = findViewById(R.id.progress_circle)
-        progressBar.max = 100
-        progressAnimator = ObjectAnimator.ofInt(progressBar, "progress", 0, 100)
-        progressAnimator.duration = 1000
-        progressAnimator.interpolator = LinearInterpolator()
     }
 
     override fun onDestroy() {
@@ -39,15 +24,23 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun startCycling() {
-        progressAnimator.start()
-        imageCycler.startCycling()
+        mediaActionSelector.startCycling()
     }
 
-    override fun selectCurrentActionIcon() {
-        imageCycler.stopCycling()
+    override fun stopCycling() {
+        mediaActionSelector.stopCycling()
+    }
 
-        progressAnimator.cancel()
-        progressBar.progress = 0
+    override fun playPause() {
+        presenter.mediaPlayPause()
+    }
+
+    override fun nextTrack() {
+        presenter.mediaNextTrack()
+    }
+
+    override fun previousTrack() {
+        presenter.mediaPreviousTrack()
     }
 
     override fun setPresenter(presenter: MainContract.Presenter) {

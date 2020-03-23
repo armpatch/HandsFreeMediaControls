@@ -9,9 +9,15 @@ class MediaPlayback(activityContext: Context){
 
     private val audioManager = activityContext.getSystemService(Activity.AUDIO_SERVICE) as AudioManager
 
-    fun playPause() {
-        val eventDown = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
-        val eventUp = KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
+    fun playPause() = sendMediaKeyEvent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
+
+    fun nextTrack() = sendMediaKeyEvent(KeyEvent.KEYCODE_MEDIA_NEXT)
+
+    fun previousTrack() = sendMediaKeyEvent(KeyEvent.KEYCODE_MEDIA_PREVIOUS)
+
+    private fun sendMediaKeyEvent(keyEvent: Int) {
+        val eventDown = KeyEvent(KeyEvent.ACTION_DOWN, keyEvent)
+        val eventUp = KeyEvent(KeyEvent.ACTION_UP, keyEvent)
 
         audioManager.dispatchMediaKeyEvent(eventDown)
         audioManager.dispatchMediaKeyEvent(eventUp)
