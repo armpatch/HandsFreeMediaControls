@@ -10,7 +10,9 @@ class ImageCycler(container: View) {
     private val playPauseTrackImage: ImageView = container.findViewById(R.id.pause_icon)
     private val skipTrackImage: ImageView = container.findViewById(R.id.next_icon)
     private val previousTrackImage: ImageView = container.findViewById(R.id.back_icon)
-    private var currentlyVisibleImage: ImageView? = null
+
+    private val mediaImages = listOf(playPauseTrackImage, skipTrackImage, previousTrackImage)
+    private var imageIndex = -1
 
     private val myHandler: Handler = Handler()
     private val transitionDelay: Long = 800
@@ -18,33 +20,14 @@ class ImageCycler(container: View) {
     private var actionRequested = false
     private var cycling = false
 
-    private val showMediaNext = Runnable {
-        Log.d(GLOBAL_TAG, "--------Next")
+    private val imageCycleRunnable = Runnable {
+        Log.d(GLOBAL_TAG, "--------Universal Runnable start -------")
 
-        if (actionRequested) {
-            sendActionAssociatedWith(currentlyVisibleImage)
-        } else {
-            show(skipTrackImage)
-            myHandler.postDelayed(showMediaBack, transitionDelay)
-        }
-    }
-
-    private val showMediaBack = Runnable {
-        Log.d(GLOBAL_TAG, "------------------Back")
-
-        if (actionRequested) {
-            sendActionAssociatedWith(currentlyVisibleImage)
-        } else {
-            show(previousTrackImage)
-            myHandler.postDelayed(hideMediaBack, transitionDelay)
-        }
-    }
-
-    private val hideMediaBack = Runnable {
-        if (actionRequested) {
-            sendActionAssociatedWith(currentlyVisibleImage)
-        } else {
-            hideAllImages()
+        if (!actionRequested) {
+            showNextImage()
+            if (imageIndex < mediaImages.size) {
+                cycleImageAfterDelay(transitionDelay)
+            }
         }
     }
 
@@ -52,8 +35,9 @@ class ImageCycler(container: View) {
         Log.d(GLOBAL_TAG, "Pause")
         cycling = true
         actionRequested = false
-        show(playPauseTrackImage)
-        myHandler.postDelayed(showMediaNext, transitionDelay)
+
+        imageIndex = -1
+        cycleImageAfterDelay(0)
     }
 
     fun stopCycling() {
@@ -61,23 +45,29 @@ class ImageCycler(container: View) {
             Log.d(GLOBAL_TAG, "----    STOP CYCLING    ----")
             cycling = false
             actionRequested = true
+            broadcastAction()
         }
     }
 
-    private fun show(current: ImageView) {
-        currentlyVisibleImage = current
-
-        hideAllImages()
-
-        current.visibility = View.VISIBLE
+    private fun cycleImageAfterDelay (delay: Long) {
+        myHandler.postDelayed(imageCycleRunnable, delay)
     }
 
-    private fun sendActionAssociatedWith(mediaImage: ImageView?) {
+    private fun showNextImage() {
+        imageIndex++
+
         hideAllImages()
-        when (mediaImage) {
-            playPauseTrackImage -> playPause()
-            skipTrackImage -> nextTrack()
-            previousTrackImage -> previousTrack()
+        if (imageIndex < mediaImages.size) {
+            mediaImages[imageIndex].visibility = View.VISIBLE
+        }
+    }
+
+    private fun broadcastAction() {
+        hideAllImages()
+        when (imageIndex) {
+            0 -> playPause()
+            1 -> nextTrack()
+            2 -> previousTrack()
         }
     }
 
