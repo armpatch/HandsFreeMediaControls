@@ -7,47 +7,88 @@ import android.widget.ImageView
 
 class ImageCycler(container: View) {
 
-    private val pauseIcon: ImageView = container.findViewById(R.id.pause_icon)
-    private val nextIcon: ImageView = container.findViewById(R.id.next_icon)
-    private val backIcon: ImageView = container.findViewById(R.id.back_icon)
+    private val playPauseImage: ImageView = container.findViewById(R.id.pause_icon)
+    private val nextImage: ImageView = container.findViewById(R.id.next_icon)
+    private val backImage: ImageView = container.findViewById(R.id.back_icon)
+    private var currentlyVisibleImage: ImageView? = null
 
     private val myHandler: Handler = Handler()
-    private val iconDelay: Long = 1000
+    private val transitionDelay: Long = 1000
+
+    private var actionRequested = false
+    private var cycling = false
 
     private val showMediaNext = Runnable {
         Log.d(GLOBAL_TAG, "--------Next")
-        show(nextIcon)
-        myHandler.postDelayed(showMediaBack, iconDelay)
+
+        if (actionRequested) {
+            playPause()
+        } else {
+            show(nextImage)
+            myHandler.postDelayed(showMediaBack, transitionDelay)
+        }
     }
 
     private val showMediaBack = Runnable {
         Log.d(GLOBAL_TAG, "------------------Back")
-        show(backIcon)
-        myHandler.postDelayed(hideMediaBack, iconDelay)
+
+        if (actionRequested) {
+            nextTrack()
+        } else {
+            show(backImage)
+            myHandler.postDelayed(hideMediaBack, transitionDelay)
+        }
     }
 
     private val hideMediaBack = Runnable {
-        show(null)
+        if (actionRequested) {
+            previousTrack()
+        } else {
+            hideAllImages()
+        }
     }
 
     fun startCycling() {
         Log.d(GLOBAL_TAG, "Pause")
-        pauseIcon.visibility = View.VISIBLE
-        myHandler.postDelayed(showMediaNext, iconDelay)
-    }
-
-    private fun show(image: ImageView?) {
-        pauseIcon.visibility = View.INVISIBLE
-        nextIcon.visibility = View.INVISIBLE
-        backIcon.visibility = View.INVISIBLE
-
-        image?.visibility = View.VISIBLE
+        cycling = true
+        actionRequested = false
+        show(playPauseImage)
+        myHandler.postDelayed(showMediaNext, transitionDelay)
     }
 
     fun stopCycling() {
-
+        if (cycling) {
+            Log.d(GLOBAL_TAG, "----    ACTION SELECTED    ----")
+            cycling = false
+            actionRequested = true
+        }
     }
 
+    private fun show(current: ImageView) {
+        currentlyVisibleImage = current
+
+        hideAllImages()
+
+        current.visibility = View.VISIBLE
+    }
+
+    private fun hideAllImages() {
+        playPauseImage.visibility = View.INVISIBLE
+        nextImage.visibility = View.INVISIBLE
+        backImage.visibility = View.INVISIBLE
+    }
+
+    private fun playPause() {
+        Log.d(GLOBAL_TAG, "----    PLAY/PAUSE    ----")
+    }
+
+    private fun nextTrack() {
+        Log.d(GLOBAL_TAG, "----       NEXT       ----")
+    }
+
+    private fun previousTrack() {
+        Log.d(GLOBAL_TAG, "----       BACK       ----")
+    }
 
 
 

@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun selectCurrentActionIcon() {
+        imageCycler.stopCycling()
+
         progressAnimator.cancel()
         progressBar.progress = 0
     }
