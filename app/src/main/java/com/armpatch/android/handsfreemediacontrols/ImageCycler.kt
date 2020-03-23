@@ -1,38 +1,41 @@
 package com.armpatch.android.handsfreemediacontrols
 
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 
 class ImageCycler(container: View) {
 
     private val pauseIcon: ImageView = container.findViewById(R.id.pause_icon)
-    private val nextIcon: ImageView = container.findViewById(R.id.pause_icon)
-    private val backIcon: ImageView = container.findViewById(R.id.pause_icon)
-
-    private val iconDelay: Long = 1000
+    private val nextIcon: ImageView = container.findViewById(R.id.next_icon)
+    private val backIcon: ImageView = container.findViewById(R.id.back_icon)
 
     private val myHandler: Handler = Handler()
+    private val iconDelay: Long = 1000
 
-    private val runnable1 = Runnable {
+    private val showMediaNext = Runnable {
+        Log.d(GLOBAL_TAG, "--------Next")
         pauseIcon.visibility = View.INVISIBLE
         nextIcon.visibility = View.VISIBLE
-        myHandler.postDelayed(runnable2, iconDelay)
+        myHandler.postDelayed(showMediaBack, iconDelay)
     }
 
-    private val runnable2 = Runnable {
-        nextIcon.visibility = View.VISIBLE
-        backIcon.visibility = View.INVISIBLE
-        myHandler.postDelayed(runnable3, iconDelay)
+    private val showMediaBack = Runnable {
+        Log.d(GLOBAL_TAG, "------------------Back")
+        nextIcon.visibility = View.INVISIBLE
+        backIcon.visibility = View.VISIBLE
+        myHandler.postDelayed(hideMediaBack, iconDelay)
     }
 
-    private val runnable3 = Runnable {
+    private val hideMediaBack = Runnable {
         backIcon.visibility = View.INVISIBLE
     }
 
     fun startCycling() {
+        Log.d(GLOBAL_TAG, "Pause")
         pauseIcon.visibility = View.VISIBLE
-        myHandler.postDelayed(runnable1, iconDelay)
+        myHandler.postDelayed(showMediaNext, iconDelay)
     }
 
 
