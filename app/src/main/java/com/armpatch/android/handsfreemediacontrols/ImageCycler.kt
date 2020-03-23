@@ -16,20 +16,18 @@ class ImageCycler(container: View) {
 
     private val showMediaNext = Runnable {
         Log.d(GLOBAL_TAG, "--------Next")
-        pauseIcon.visibility = View.INVISIBLE
-        nextIcon.visibility = View.VISIBLE
+        show(nextIcon)
         myHandler.postDelayed(showMediaBack, iconDelay)
     }
 
     private val showMediaBack = Runnable {
         Log.d(GLOBAL_TAG, "------------------Back")
-        nextIcon.visibility = View.INVISIBLE
-        backIcon.visibility = View.VISIBLE
+        show(backIcon)
         myHandler.postDelayed(hideMediaBack, iconDelay)
     }
 
     private val hideMediaBack = Runnable {
-        backIcon.visibility = View.INVISIBLE
+        show(null)
     }
 
     fun startCycling() {
@@ -38,7 +36,17 @@ class ImageCycler(container: View) {
         myHandler.postDelayed(showMediaNext, iconDelay)
     }
 
+    private fun show(image: ImageView?) {
+        pauseIcon.visibility = View.INVISIBLE
+        nextIcon.visibility = View.INVISIBLE
+        backIcon.visibility = View.INVISIBLE
 
+        image?.visibility = View.VISIBLE
+    }
+
+    fun stopCycling() {
+
+    }
 
 
 
