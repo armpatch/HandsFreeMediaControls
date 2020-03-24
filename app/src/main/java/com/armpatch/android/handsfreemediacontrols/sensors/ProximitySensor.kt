@@ -1,4 +1,4 @@
-package com.armpatch.android.handsfreemediacontrols
+package com.armpatch.android.handsfreemediacontrols.sensors
 
 import android.content.Context
 import android.hardware.Sensor

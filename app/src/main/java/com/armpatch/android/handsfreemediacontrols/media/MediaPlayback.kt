@@ -1,4 +1,4 @@
-package com.armpatch.android.handsfreemediacontrols
+package com.armpatch.android.handsfreemediacontrols.media
 
 import android.app.Activity
 import android.content.Context
