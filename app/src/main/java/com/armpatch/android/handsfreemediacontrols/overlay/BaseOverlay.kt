@@ -38,16 +38,16 @@ abstract class BaseOverlay(context: Context, @LayoutRes layoutResId:  Int) {
     }
 
     fun show() {
-        if (isAttached) {
-            windowManager.removeView(overlayView)
-            isAttached = false
+        if (!isAttached) {
+            windowManager.addView(overlayView, layoutParams)
+            isAttached = true
         }
     }
 
     fun hide() {
-        if (!isAttached) {
-            windowManager.addView(overlayView, layoutParams)
-            isAttached = true
+        if (isAttached) {
+            windowManager.removeView(overlayView)
+            isAttached = false
         }
     }
 
