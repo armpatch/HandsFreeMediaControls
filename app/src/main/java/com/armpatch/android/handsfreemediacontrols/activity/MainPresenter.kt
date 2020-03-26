@@ -1,8 +1,6 @@
 package com.armpatch.android.handsfreemediacontrols.activity
 
-import android.content.Context
-
-class MainPresenter(view: MainContract.View, private val activityContext: Context)
+class MainPresenter(view: MainContract.View)
     : MainContract.Presenter {
     private var view: MainContract.View? = view
 

@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), MainContract.View{
         startButton = findViewById(R.id.start_service_button)
         startButton.setOnClickListener { startOverlayService() }
 
-        setPresenter(MainPresenter(this, this))
+        setPresenter(MainPresenter(this))
         presenter.onCreate()
 
         requestOverlayPermission()

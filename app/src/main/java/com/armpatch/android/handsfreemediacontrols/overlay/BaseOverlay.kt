@@ -11,7 +11,7 @@ import android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 import android.view.WindowManager.LayoutParams.TYPE_PHONE
 import androidx.annotation.LayoutRes
 
-abstract class BaseOverlay(context: Context, @LayoutRes layout:  Int) {
+abstract class BaseOverlay(context: Context, @LayoutRes layoutResId:  Int) {
     private var windowManager: WindowManager =
         context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private lateinit var layoutParams: WindowManager.LayoutParams
@@ -19,7 +19,7 @@ abstract class BaseOverlay(context: Context, @LayoutRes layout:  Int) {
     private var isAttached: Boolean = false
 
     init {
-        setLayout(context, layout)
+        setLayout(context, layoutResId)
         setDefaultParams()
     }
 
@@ -51,7 +51,7 @@ abstract class BaseOverlay(context: Context, @LayoutRes layout:  Int) {
         }
     }
 
-    fun setLayout(context: Context, @LayoutRes layout: Int) {
+    private fun setLayout(context: Context, @LayoutRes layout: Int) {
         val inflater: LayoutInflater = LayoutInflater.from(context)
         overlayView = inflater.inflate(layout, null)
     }

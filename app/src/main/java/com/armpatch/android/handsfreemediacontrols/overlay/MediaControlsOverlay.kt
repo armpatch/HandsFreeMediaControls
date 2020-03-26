@@ -3,11 +3,10 @@ package com.armpatch.android.handsfreemediacontrols.overlay
 import android.content.Context
 import com.armpatch.android.handsfreemediacontrols.R
 
-
 class MediaControlsOverlay(context: Context, mediaCyclerListener: MediaViewCycler.Listener):
     BaseOverlay(context, R.layout.content_overlay) {
 
-    var mediaViewCycler: MediaViewCycler =
+    private var mediaViewCycler: MediaViewCycler =
         MediaViewCycler(overlayView)
 
     init {
