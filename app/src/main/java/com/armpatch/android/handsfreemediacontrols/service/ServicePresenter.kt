@@ -4,8 +4,8 @@ import android.content.Context
 import com.armpatch.android.handsfreemediacontrols.media.MediaPlayback
 import com.armpatch.android.handsfreemediacontrols.sensors.ProximitySensor
 
-class ServicePresenter(view: ServiceContract.View, private val activityContext: Context)
-    : ServiceContract.Presenter,
+class ServicePresenter(view: ServiceContract.View, private val activityContext: Context) :
+    ServiceContract.Presenter,
     ProximitySensor.Listener {
 
     private var view: ServiceContract.View? = view
@@ -18,21 +18,16 @@ class ServicePresenter(view: ServiceContract.View, private val activityContext: 
     }
 
     override fun onCreate() {
-        proximitySensor =
-            ProximitySensor(
-                activityContext,
-                this
-            )
-        mediaPlayback =
-            MediaPlayback(activityContext)
+        proximitySensor = ProximitySensor(activityContext, this)
+        mediaPlayback = MediaPlayback(activityContext)
     }
 
     override fun onCloseProximity() {
-        view?.startCycling()
+        view?.startCyclingMediaActions()
     }
 
     override fun onFarProximity() {
-        view?.stopCycling()
+        view?.stopCyclingMediaActions()
     }
 
     override fun mediaPlayPause() {

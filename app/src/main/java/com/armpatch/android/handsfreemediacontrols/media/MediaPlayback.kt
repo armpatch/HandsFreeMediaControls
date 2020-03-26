@@ -22,5 +22,4 @@ class MediaPlayback(activityContext: Context){
         audioManager.dispatchMediaKeyEvent(eventDown)
         audioManager.dispatchMediaKeyEvent(eventUp)
     }
-
 }

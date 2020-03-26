@@ -1,4 +1,4 @@
-package com.armpatch.android.handsfreemediacontrols.service
+package com.armpatch.android.handsfreemediacontrols.overlay
 
 import android.os.Handler
 import android.util.Log

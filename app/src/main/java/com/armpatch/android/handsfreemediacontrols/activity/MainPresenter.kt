@@ -7,12 +7,11 @@ class MainPresenter(view: MainContract.View, private val activityContext: Contex
     private var view: MainContract.View? = view
 
     override fun onCreate() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onDestroy() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        view = null
     }
-
 
 }

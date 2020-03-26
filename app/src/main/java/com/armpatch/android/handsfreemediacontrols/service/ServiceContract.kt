@@ -12,7 +12,7 @@ interface ServiceContract {
 
     interface View :
         BaseView<Presenter> {
-        fun startCycling()
-        fun stopCycling()
+        fun startCyclingMediaActions()
+        fun stopCyclingMediaActions()
     }
 }

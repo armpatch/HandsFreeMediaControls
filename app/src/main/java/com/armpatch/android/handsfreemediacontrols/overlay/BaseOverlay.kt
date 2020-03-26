@@ -4,23 +4,28 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 import android.view.WindowManager.LayoutParams.TYPE_PHONE
+import androidx.annotation.LayoutRes
 
-abstract class BaseOverlay(context: Context) {
+abstract class BaseOverlay(context: Context, @LayoutRes layout:  Int) {
     private var windowManager: WindowManager =
         context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private lateinit var layoutParams: WindowManager.LayoutParams
-    private var overlayView: View? = null
+    lateinit var overlayView: View
     private var isAttached: Boolean = false
 
     init {
+        setLayout(context, layout)
         setDefaultParams()
     }
 
     private fun setDefaultParams() {
+        layoutParams = WindowManager.LayoutParams()
+
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.type =
@@ -32,18 +37,23 @@ abstract class BaseOverlay(context: Context) {
         layoutParams.gravity = Gravity.TOP or Gravity.LEFT
     }
 
-    fun detachFromWindow() {
-        if (isAttached && overlayView != null) {
+    fun show() {
+        if (isAttached) {
             windowManager.removeView(overlayView)
             isAttached = false
         }
     }
 
-    fun attachToWindow() {
-        if (!isAttached && overlayView != null) {
+    fun hide() {
+        if (!isAttached) {
             windowManager.addView(overlayView, layoutParams)
             isAttached = true
         }
+    }
+
+    fun setLayout(context: Context, @LayoutRes layout: Int) {
+        val inflater: LayoutInflater = LayoutInflater.from(context)
+        overlayView = inflater.inflate(layout, null)
     }
 
 }

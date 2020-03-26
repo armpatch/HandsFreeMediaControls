@@ -5,12 +5,12 @@ import com.armpatch.android.handsfreemediacontrols.BaseView
 
 interface MainContract {
     interface Presenter : BasePresenter {
-        // TODO
+        // nothing to do
     }
 
     interface View :
         BaseView<Presenter> {
-        // TODO
+        fun startOverlayService()
     }
 
 }

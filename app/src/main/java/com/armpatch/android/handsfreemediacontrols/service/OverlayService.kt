@@ -3,20 +3,23 @@ package com.armpatch.android.handsfreemediacontrols.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.armpatch.android.handsfreemediacontrols.overlay.MediaControlsOverlay
+import com.armpatch.android.handsfreemediacontrols.overlay.MediaViewCycler
 
-class OverlayService: Service(), ServiceContract.View, MediaViewCycler.Listener{
+class OverlayService : Service(), ServiceContract.View, MediaViewCycler.Listener {
 
     private lateinit var presenter: ServiceContract.Presenter
-    private lateinit var mediaViewCycler: MediaViewCycler
+    private lateinit var mediaControlsOverlay: MediaControlsOverlay
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    fun setup() {
-
-        TODO("create overlay and init mediaViewCycler")
+    override fun onCreate() {
+        super.onCreate()
 
         setPresenter(ServicePresenter(this, this))
         presenter.onCreate()
+
+        mediaControlsOverlay = MediaControlsOverlay(applicationContext, this)
     }
 
     override fun setPresenter(presenter: ServiceContract.Presenter) {
@@ -28,12 +31,12 @@ class OverlayService: Service(), ServiceContract.View, MediaViewCycler.Listener{
         super.onDestroy()
     }
 
-    override fun startCycling() {
-        mediaViewCycler.startCyclingActions()
+    override fun startCyclingMediaActions() {
+        mediaControlsOverlay.startCyclingMediaActions()
     }
 
-    override fun stopCycling() {
-        mediaViewCycler.stopCycling()
+    override fun stopCyclingMediaActions() {
+        mediaControlsOverlay.stopCyclingMediaActions()
     }
 
     override fun playPause() {
