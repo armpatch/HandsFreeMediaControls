@@ -3,6 +3,7 @@ package com.armpatch.android.handsfreemediacontrols.overlay
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.armpatch.android.handsfreemediacontrols.GLOBAL_TAG
 import com.armpatch.android.handsfreemediacontrols.R
@@ -18,7 +19,7 @@ class MediaViewCycler(container: View) {
     private var imageIndex = -1
 
     private val myHandler: Handler = Handler()
-    private val transitionDelay: Long = 800
+    private val transitionTime: Long = 800
     private var actionRequested = false
     private var cycling = false
 
@@ -36,7 +37,7 @@ class MediaViewCycler(container: View) {
         if (!actionRequested) {
             showNextImage()
             if (imageIndex < mediaImages.size) {
-                changeImageAfterDelay(transitionDelay)
+                changeImageAfterDelay(transitionTime)
             }
         }
     }
@@ -74,6 +75,8 @@ class MediaViewCycler(container: View) {
         hideAllImages()
         if (imageIndex < mediaImages.size) {
             mediaImages[imageIndex].visibility = View.VISIBLE
+            circularProgress.progress = 0f
+            circularProgress.setProgressWithAnimation(100f, transitionTime, LinearInterpolator(), 0)
         }
     }
 
