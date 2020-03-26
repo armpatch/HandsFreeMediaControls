@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.ImageView
 import com.armpatch.android.handsfreemediacontrols.GLOBAL_TAG
 import com.armpatch.android.handsfreemediacontrols.R
+import com.mikhaellopez.circularprogressbar.CircularProgressBar
 
 class MediaViewCycler(container: View) {
 
+    private val circularProgress: CircularProgressBar = container.findViewById(R.id.circular_progress_bar)
     private val playPauseTrackImage: ImageView = container.findViewById(R.id.pause_icon)
     private val skipTrackImage: ImageView = container.findViewById(R.id.next_icon)
     private val previousTrackImage: ImageView = container.findViewById(R.id.back_icon)
