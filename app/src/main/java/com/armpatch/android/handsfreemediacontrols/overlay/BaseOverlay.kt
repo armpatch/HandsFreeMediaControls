@@ -37,14 +37,14 @@ abstract class BaseOverlay(context: Context, @LayoutRes layoutResId:  Int) {
         layoutParams.gravity = Gravity.TOP or Gravity.LEFT
     }
 
-    fun show() {
+    open fun showOverlay() {
         if (!isAttached) {
             windowManager.addView(overlayView, layoutParams)
             isAttached = true
         }
     }
 
-    fun hide() {
+    fun hideOverlay() {
         if (isAttached) {
             windowManager.removeView(overlayView)
             isAttached = false
