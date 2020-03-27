@@ -99,9 +99,9 @@ class MediaViewCycler(container: View) {
 
     private fun notifyListener() {
         when (imageIndex) {
-            0 -> playPause()
-            1 -> nextTrack()
-            2 -> previousTrack()
+            0 -> actionListener?.onPlayPauseAction()
+            1 -> actionListener?.onNextTrackAction()
+            2 -> actionListener?.onPreviousTrackAction()
         }
     }
 
@@ -109,18 +109,6 @@ class MediaViewCycler(container: View) {
         playPauseTrackImage.visibility = View.INVISIBLE
         skipTrackImage.visibility = View.INVISIBLE
         previousTrackImage.visibility = View.INVISIBLE
-    }
-
-    private fun playPause() {
-        actionListener?.onPlayPauseAction()
-    }
-
-    private fun nextTrack() {
-        actionListener?.onNextTrackAction()
-    }
-
-    private fun previousTrack() {
-        actionListener?.onPreviousTrackAction()
     }
 
 }
