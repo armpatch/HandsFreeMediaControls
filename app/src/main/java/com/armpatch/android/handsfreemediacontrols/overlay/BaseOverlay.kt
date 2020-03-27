@@ -13,7 +13,7 @@ import android.view.WindowManager.LayoutParams.TYPE_PHONE
 import androidx.annotation.LayoutRes
 import com.armpatch.android.handsfreemediacontrols.GLOBAL_TAG
 
-abstract class BaseOverlay(context: Context, @LayoutRes layoutResId:  Int) {
+abstract class BaseOverlay(val context: Context, @LayoutRes layoutResId:  Int) {
     private var windowManager: WindowManager =
         context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private lateinit var layoutParams: WindowManager.LayoutParams
@@ -28,12 +28,12 @@ abstract class BaseOverlay(context: Context, @LayoutRes layoutResId:  Int) {
     private fun setDefaultParams() {
         layoutParams = WindowManager.LayoutParams()
 
+        layoutParams.y = -StatusBarHeight(context)
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = ScreenHeight(context) + NavBarHeight(context) + StatusBarHeight(context)
         layoutParams.type =
             if (Build.VERSION.SDK_INT >= 26) TYPE_APPLICATION_OVERLAY else TYPE_PHONE
-        layoutParams.flags =
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         layoutParams.format = PixelFormat.TRANSPARENT
         layoutParams.gravity = Gravity.TOP or Gravity.LEFT
