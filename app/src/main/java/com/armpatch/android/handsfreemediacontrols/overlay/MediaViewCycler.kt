@@ -48,17 +48,19 @@ class MediaViewCycler(container: View) {
     private val imageChangingRunnable = Runnable {
         Log.d(GLOBAL_TAG, "imageChangingRunnable : Start")
 
-        if (!actionRequested) {
-            imageIndex++
+        if (actionRequested) return@Runnable
 
+        imageIndex++
+
+        if (imageIndex < 4) {
             mediaImage.setImageResource(mediaResourcesIds[imageIndex])
             Log.d(GLOBAL_TAG, "imageChangingRunnable : set image at index = $imageIndex")
+        }
 
-            if (imageIndex < mediaResourcesIds.size - 1) {
-                changeImageAfterDelay(transitionTime)
-            } else {
-                notifyExpired()
-            }
+        if (imageIndex < 3) {
+            changeImageAfterDelay(transitionTime)
+        } else {
+            notifyExpired()
         }
     }
 
