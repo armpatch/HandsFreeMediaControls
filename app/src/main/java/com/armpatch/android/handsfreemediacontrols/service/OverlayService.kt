@@ -6,7 +6,7 @@ import android.os.IBinder
 import com.armpatch.android.handsfreemediacontrols.overlay.MediaControlsOverlay
 import com.armpatch.android.handsfreemediacontrols.overlay.MediaViewCycler
 
-class OverlayService : Service(), ServiceContract.View, MediaViewCycler.Listener {
+class OverlayService : Service(), ServiceContract.View, MediaViewCycler.MediaActionListener {
 
     private lateinit var presenter: ServiceContract.Presenter
     private lateinit var mediaControlsOverlay: MediaControlsOverlay
@@ -39,15 +39,15 @@ class OverlayService : Service(), ServiceContract.View, MediaViewCycler.Listener
         mediaControlsOverlay.stopCyclingMediaActions()
     }
 
-    override fun playPause() {
+    override fun onPlayPauseAction() {
         presenter.mediaPlayPause()
     }
 
-    override fun nextTrack() {
+    override fun onNextTrackAction() {
         presenter.mediaNextTrack()
     }
 
-    override fun previousTrack() {
+    override fun onPreviousTrackAction() {
         presenter.mediaPreviousTrack()
     }
 }

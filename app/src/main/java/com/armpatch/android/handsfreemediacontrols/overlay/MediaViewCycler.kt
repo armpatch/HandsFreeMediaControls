@@ -3,6 +3,7 @@ package com.armpatch.android.handsfreemediacontrols.overlay
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.armpatch.android.handsfreemediacontrols.GLOBAL_TAG
@@ -23,12 +24,20 @@ class MediaViewCycler(container: View) {
     private var actionRequested = false
     private var cycling = false
 
-    private var actionListener: Listener? = null
+    private var actionListener: MediaActionListener? = null
+    private var expirationListener: ExpirationListener? = null
 
-    interface Listener {
-        fun playPause()
-        fun nextTrack()
-        fun previousTrack()
+    interface MediaActionListener {
+        fun onPlayPauseAction()
+        fun onNextTrackAction()
+        fun onPreviousTrackAction()
+    }
+
+    /**
+     * used for when all media actions have been shown without an action being selected
+     */
+    interface ExpirationListener {
+        fun onMediaCyclerExpired()
     }
 
     private val imageChangingRunnable = Runnable {
@@ -42,8 +51,12 @@ class MediaViewCycler(container: View) {
         }
     }
 
-    fun setActionListener(actionListener: Listener) {
+    fun setMediaListener(actionListener: MediaActionListener) {
         this.actionListener = actionListener
+    }
+
+    fun setExpirationListener(expirationListener: ExpirationListener) {
+        this.expirationListener = expirationListener
     }
 
     fun startCyclingActions() {
@@ -60,8 +73,8 @@ class MediaViewCycler(container: View) {
             Log.d(GLOBAL_TAG, "stopCyclingActions")
             cycling = false
             actionRequested = true
-            hideAllImages()
-            sendActionCallback()
+            circularProgress.setProgressWithAnimation(circularProgress.progress + 10, 200, DecelerateInterpolator() )
+            notifyListeners()
         }
     }
 
@@ -77,10 +90,12 @@ class MediaViewCycler(container: View) {
             mediaImages[imageIndex].visibility = View.VISIBLE
             circularProgress.progress = 0f
             circularProgress.setProgressWithAnimation(100f, transitionTime, LinearInterpolator(), 0)
+        } else {
+            expirationListener?.onMediaCyclerExpired()
         }
     }
 
-    private fun sendActionCallback() {
+    private fun notifyListeners() {
         when (imageIndex) {
             0 -> playPause()
             1 -> nextTrack()
@@ -95,15 +110,15 @@ class MediaViewCycler(container: View) {
     }
 
     private fun playPause() {
-        actionListener?.playPause()
+        actionListener?.onPlayPauseAction()
     }
 
     private fun nextTrack() {
-        actionListener?.nextTrack()
+        actionListener?.onNextTrackAction()
     }
 
     private fun previousTrack() {
-        actionListener?.previousTrack()
+        actionListener?.onPreviousTrackAction()
     }
 
 }

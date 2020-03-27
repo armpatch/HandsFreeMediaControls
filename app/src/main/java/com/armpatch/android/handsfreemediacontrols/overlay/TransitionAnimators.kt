@@ -14,3 +14,13 @@ import android.view.animation.LinearInterpolator
 
         return animator
     }
+
+fun fadeOutAnimator(view: View, duration: Long): ObjectAnimator {
+    val alpha = PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
+    val animator = ObjectAnimator.ofPropertyValuesHolder(view, alpha)
+
+    animator.interpolator = LinearInterpolator()
+    animator.duration = duration
+
+    return animator
+}
