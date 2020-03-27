@@ -55,8 +55,6 @@ class MediaViewCycler(container: View) {
             Log.d(GLOBAL_TAG, "imageChangingRunnable : set image at index = $imageIndex")
 
             if (imageIndex < mediaResourcesIds.size - 1) {
-                circularProgress.progress = 0f
-                circularProgress.setProgressWithAnimation(100f, transitionTime, LinearInterpolator(), 0)
                 changeImageAfterDelay(transitionTime)
             } else {
                 notifyExpired()
@@ -77,6 +75,8 @@ class MediaViewCycler(container: View) {
         cycling = true
         actionRequested = false
 
+        circularProgress.progress = 0f
+        circularProgress.setProgressWithAnimation(100f, 3 * transitionTime, LinearInterpolator(), 0)
         imageIndex = -1
         changeImageAfterDelay(0)
     }
@@ -86,7 +86,9 @@ class MediaViewCycler(container: View) {
             Log.d(GLOBAL_TAG, "Media Cycler: stop")
             cycling = false
             actionRequested = true
+
             circularProgress.setProgressWithAnimation(circularProgress.progress + 10, 50, DecelerateInterpolator() )
+
             notifyMediaListener()
         }
     }
