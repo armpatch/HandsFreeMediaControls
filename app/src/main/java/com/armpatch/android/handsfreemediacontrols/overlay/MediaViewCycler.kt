@@ -13,6 +13,8 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 class MediaViewCycler(container: View) {
 
     private val circularProgress: CircularProgressBar = container.findViewById(R.id.circular_progress_bar)
+    // used 3 images instead of changing the resource of one image.
+    // TODO change to have one image instead
     private val playPauseTrackImage: ImageView = container.findViewById(R.id.pause_icon)
     private val skipTrackImage: ImageView = container.findViewById(R.id.next_icon)
     private val previousTrackImage: ImageView = container.findViewById(R.id.back_icon)
@@ -74,7 +76,7 @@ class MediaViewCycler(container: View) {
             cycling = false
             actionRequested = true
             circularProgress.setProgressWithAnimation(circularProgress.progress + 10, 200, DecelerateInterpolator() )
-            notifyListeners()
+            notifyListener()
         }
     }
 
@@ -95,7 +97,7 @@ class MediaViewCycler(container: View) {
         }
     }
 
-    private fun notifyListeners() {
+    private fun notifyListener() {
         when (imageIndex) {
             0 -> playPause()
             1 -> nextTrack()
