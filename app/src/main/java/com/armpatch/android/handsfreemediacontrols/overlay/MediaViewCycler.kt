@@ -1,5 +1,7 @@
 package com.armpatch.android.handsfreemediacontrols.overlay
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Handler
 import android.util.Log
 import android.view.View
@@ -12,15 +14,14 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 class MediaViewCycler(container: View) {
 
     private val circularProgress: CircularProgressBar = container.findViewById(R.id.circular_progress_bar)
-    private val mediaImage: ImageView = container.findViewById(R.id.media_action_selector)
 
-    private val mediaResourcesIds = intArrayOf(
+    private val mediaImage: ImageView = container.findViewById(R.id.media_action_selector)
+    private val imageResourcesIds = intArrayOf(
         R.drawable.ic_pause_black_24dp,
         R.drawable.ic_skip_next_black_24dp,
         R.drawable.ic_skip_previous_black_24dp,
         R.drawable.ic_clear_black_24dp
     )
-
     private var imageIndex = -1
 
     private val myHandler: Handler = Handler()
@@ -29,7 +30,25 @@ class MediaViewCycler(container: View) {
     private var isCycling = false
 
     private var mediaListener: MediaActionListener? = null
-    private var expirationListener: ExpirationListener? = null
+    private var animationListener: AnimationListener? = null
+
+    private var fadeInAnimation = fadeInAnimator(container, 200)
+    private var fadeOutAnimation = fadeOutAnimator(container, 200)
+
+    init {
+        fadeInAnimation.addListener(object: AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                startCyclingAnimation()
+            }
+        })
+        fadeOutAnimation.startDelay = 300
+        fadeOutAnimation.addListener(object: AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                reset()
+                animationListener?.onAnimationEnded()
+            }
+        })
+    }
 
     interface MediaActionListener {
         fun onPlayPauseAction()
@@ -40,8 +59,8 @@ class MediaViewCycler(container: View) {
     /**
      * used for when all media actions have been shown without an action being selected
      */
-    interface ExpirationListener {
-        fun onMediaCyclerExpired()
+    interface AnimationListener {
+        fun onAnimationEnded()
     }
 
     private val imageChangingRunnable = Runnable {
@@ -52,14 +71,14 @@ class MediaViewCycler(container: View) {
         imageIndex++
 
         if (imageIndex < 4) {
-            mediaImage.setImageResource(mediaResourcesIds[imageIndex])
+            mediaImage.setImageResource(imageResourcesIds[imageIndex])
             Log.d(GLOBAL_TAG, "imageChangingRunnable : set image at index = $imageIndex")
         }
 
         if (imageIndex < 3) {
-            changeImageAfterDelay(transitionTime)
+            changeMediaIcon(transitionTime)
         } else {
-            notifyExpired()
+            sendMediaAction()
         }
     }
 
@@ -67,8 +86,8 @@ class MediaViewCycler(container: View) {
         this.mediaListener = mediaListener
     }
 
-    fun setExpirationListener(expirationListener: ExpirationListener) {
-        this.expirationListener = expirationListener
+    fun setAnimationListener(animationListener: AnimationListener) {
+        this.animationListener = animationListener
     }
 
     fun start() {
@@ -76,11 +95,14 @@ class MediaViewCycler(container: View) {
         isCycling = true
         actionRequested = false
 
-        circularProgress.indeterminateMode = false
+        fadeInAnimation.start()
+    }
+
+    private fun startCyclingAnimation() {
         circularProgress.progress = 0f
         circularProgress.setProgressWithAnimation(100f, 3 * transitionTime, LinearInterpolator(), 0)
         imageIndex = -1
-        changeImageAfterDelay(0)
+        changeMediaIcon(0)
     }
 
     fun stop() {
@@ -90,26 +112,29 @@ class MediaViewCycler(container: View) {
             actionRequested = true
 
             circularProgress.indeterminateMode = true
-            circularProgress.progress = 100f
 
-            notifyMediaListener()
+            sendMediaAction()
+            fadeOutAnimation.start()
         }
     }
 
-    private fun changeImageAfterDelay (delay: Long) {
+    private fun changeMediaIcon (delay: Long) {
         myHandler.postDelayed(imageChangingRunnable, delay)
     }
 
-    private fun notifyMediaListener() {
+    private fun sendMediaAction() {
         when (imageIndex) {
             0 -> mediaListener?.onPlayPauseAction()
             1 -> mediaListener?.onNextTrackAction()
             2 -> mediaListener?.onPreviousTrackAction()
         }
+        isCycling = false
     }
 
-    private fun notifyExpired() {
-        isCycling = false
-        expirationListener?.onMediaCyclerExpired()
+    private fun reset() {
+        mediaImage.setImageResource(imageResourcesIds[0])
+        circularProgress.indeterminateMode = false
+        circularProgress.progress = 0f
     }
+
 }

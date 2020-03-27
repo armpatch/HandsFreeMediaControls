@@ -23,10 +23,6 @@ class MainActivity : AppCompatActivity(), MainContract.View{
 
         setPresenter(MainPresenter(this))
         presenter.onCreate()
-    }
-
-    override fun onStart() {
-        super.onStart()
         getOverlayPermission(this)
     }
 
