@@ -13,20 +13,23 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 class MediaViewCycler(container: View) {
 
     private val circularProgress: CircularProgressBar = container.findViewById(R.id.circular_progress_bar)
-    // used 3 images instead of changing the resource of one image.
-    // TODO change to have one image instead
-    private val playPauseTrackImage: ImageView = container.findViewById(R.id.pause_icon)
-    private val skipTrackImage: ImageView = container.findViewById(R.id.next_icon)
-    private val previousTrackImage: ImageView = container.findViewById(R.id.back_icon)
-    private val mediaImages = listOf(playPauseTrackImage, skipTrackImage, previousTrackImage)
+    private val mediaImage: ImageView = container.findViewById(R.id.media_image_view)
+
+    private val mediaResourcesIds = intArrayOf(
+        R.drawable.ic_pause_black_24dp,
+        R.drawable.ic_skip_next_black_24dp,
+        R.drawable.ic_skip_previous_black_24dp,
+        R.drawable.ic_clear_black_24dp
+    )
+
     private var imageIndex = -1
 
     private val myHandler: Handler = Handler()
     private val transitionTime: Long = 800
     private var actionRequested = false
-    private var cycling = false
+    private var isCycling = false
 
-    private var actionListener: MediaActionListener? = null
+    private var mediaListener: MediaActionListener? = null
     private var expirationListener: ExpirationListener? = null
 
     interface MediaActionListener {
@@ -45,38 +48,50 @@ class MediaViewCycler(container: View) {
     private val imageChangingRunnable = Runnable {
         Log.d(GLOBAL_TAG, "imageChangingRunnable : Start")
 
-        if (!actionRequested) {
-            showNextImage()
-            if (imageIndex < mediaImages.size) {
-                changeImageAfterDelay(transitionTime)
-            }
+        if (actionRequested) return@Runnable
+
+        imageIndex++
+
+        if (imageIndex < 4) {
+            mediaImage.setImageResource(mediaResourcesIds[imageIndex])
+            Log.d(GLOBAL_TAG, "imageChangingRunnable : set image at index = $imageIndex")
+        }
+
+        if (imageIndex < 3) {
+            changeImageAfterDelay(transitionTime)
+        } else {
+            notifyExpired()
         }
     }
 
-    fun setMediaListener(actionListener: MediaActionListener) {
-        this.actionListener = actionListener
+    fun setMediaListener(mediaListener: MediaActionListener) {
+        this.mediaListener = mediaListener
     }
 
     fun setExpirationListener(expirationListener: ExpirationListener) {
         this.expirationListener = expirationListener
     }
 
-    fun startCyclingActions() {
-        Log.d(GLOBAL_TAG, "startCyclingActions")
-        cycling = true
+    fun start() {
+        Log.d(GLOBAL_TAG, "Media Cycler: startCycling")
+        isCycling = true
         actionRequested = false
 
+        circularProgress.progress = 0f
+        circularProgress.setProgressWithAnimation(100f, 3 * transitionTime, LinearInterpolator(), 0)
         imageIndex = -1
         changeImageAfterDelay(0)
     }
 
-    fun stopCycling() {
-        if (cycling) {
-            Log.d(GLOBAL_TAG, "stopCyclingActions")
-            cycling = false
+    fun stop() {
+        if (isCycling) {
+            Log.d(GLOBAL_TAG, "Media Cycler: stop")
+            isCycling = false
             actionRequested = true
-            circularProgress.setProgressWithAnimation(circularProgress.progress + 10, 200, DecelerateInterpolator() )
-            notifyListener()
+
+            circularProgress.setProgressWithAnimation(circularProgress.progress + 10, 50, DecelerateInterpolator() )
+
+            notifyMediaListener()
         }
     }
 
@@ -84,43 +99,16 @@ class MediaViewCycler(container: View) {
         myHandler.postDelayed(imageChangingRunnable, delay)
     }
 
-    private fun showNextImage() {
-        imageIndex++
-
-        hideAllImages()
-        if (imageIndex < mediaImages.size) {
-            mediaImages[imageIndex].visibility = View.VISIBLE
-            circularProgress.progress = 0f
-            circularProgress.setProgressWithAnimation(100f, transitionTime, LinearInterpolator(), 0)
-        } else {
-            expirationListener?.onMediaCyclerExpired()
-        }
-    }
-
-    private fun notifyListener() {
+    private fun notifyMediaListener() {
         when (imageIndex) {
-            0 -> playPause()
-            1 -> nextTrack()
-            2 -> previousTrack()
+            0 -> mediaListener?.onPlayPauseAction()
+            1 -> mediaListener?.onNextTrackAction()
+            2 -> mediaListener?.onPreviousTrackAction()
         }
     }
 
-    private fun hideAllImages() {
-        playPauseTrackImage.visibility = View.INVISIBLE
-        skipTrackImage.visibility = View.INVISIBLE
-        previousTrackImage.visibility = View.INVISIBLE
+    private fun notifyExpired() {
+        isCycling = false
+        expirationListener?.onMediaCyclerExpired()
     }
-
-    private fun playPause() {
-        actionListener?.onPlayPauseAction()
-    }
-
-    private fun nextTrack() {
-        actionListener?.onNextTrackAction()
-    }
-
-    private fun previousTrack() {
-        actionListener?.onPreviousTrackAction()
-    }
-
 }

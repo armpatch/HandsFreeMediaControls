@@ -5,6 +5,8 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.util.Log
+import com.armpatch.android.handsfreemediacontrols.GLOBAL_TAG
 
 class ProximitySensor(private val activityContext: Context, private val listener: Listener) {
 
@@ -16,8 +18,11 @@ class ProximitySensor(private val activityContext: Context, private val listener
         override fun onSensorChanged(event: SensorEvent) {
             if (event.sensor.type == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] == 0f) {
+                    Log.d(GLOBAL_TAG, "-------------------")
+                    Log.d(GLOBAL_TAG, "Sensor =  CLOSE")
                     listener.onCloseProximity()
                 } else {
+                    Log.d(GLOBAL_TAG, "Sensor =  FAR")
                     listener.onFarProximity()
                 }
             }

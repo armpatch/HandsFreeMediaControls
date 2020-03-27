@@ -23,7 +23,7 @@
 
         <include
             android:id="@+id/media_action_selector"
-            layout="@layout/content_media_action_selector"
+            layout="@layout/component_media_selector"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center" />
@@ -36,7 +36,9 @@
             app:cpb_progressbar_color="@color/blue"
             app:cpb_background_progressbar_color="@android:color/transparent"
             app:cpb_progressbar_width="10dp"
-            app:cpb_background_progressbar_width="10dp"/>
+            app:cpb_background_progressbar_width="10dp"
+            app:cpb_round_border="true"
+            />
 
     </FrameLayout>
 
