@@ -6,7 +6,7 @@ import android.content.Context
 import com.armpatch.android.handsfreemediacontrols.R
 
 class MediaControlsOverlay(context: Context, mediaCyclerListener: MediaViewCycler.MediaActionListener):
-    BaseOverlay(context, R.layout.content_overlay), MediaViewCycler.ExpirationListener {
+    BaseOverlay(context, R.layout.layout_overlay_screen), MediaViewCycler.ExpirationListener {
 
     private var fadeInAnimator = fadeInAnimator(overlayView, 200)
     private var fadeOutAnimator = fadeOutAnimator(overlayView, 200)
@@ -24,11 +24,11 @@ class MediaControlsOverlay(context: Context, mediaCyclerListener: MediaViewCycle
     fun startCyclingMediaActions() {
         showOverlay()
         fadeInAnimator.start()
-        mediaViewCycler.startCyclingActions()
+        mediaViewCycler.start()
     }
 
     fun stopCyclingMediaActions() {
-        mediaViewCycler.stopCycling()
+        mediaViewCycler.stop()
         fadeOutAnimator.startDelay = 500
         animateHide()
     }

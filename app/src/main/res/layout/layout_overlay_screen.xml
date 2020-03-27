@@ -23,7 +23,7 @@
 
         <include
             android:id="@+id/media_action_selector"
-            layout="@layout/content_media_action_selector"
+            layout="@layout/component_media_selector"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center" />
