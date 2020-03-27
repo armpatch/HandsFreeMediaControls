@@ -114,7 +114,6 @@ class MediaViewCycler(container: View) {
             circularProgress.indeterminateMode = true
 
             sendMediaAction()
-            fadeOutAnimation.start()
         }
     }
 
@@ -129,6 +128,7 @@ class MediaViewCycler(container: View) {
             2 -> mediaListener?.onPreviousTrackAction()
         }
         isCycling = false
+        fadeOutAnimation.start()
     }
 
     private fun reset() {
