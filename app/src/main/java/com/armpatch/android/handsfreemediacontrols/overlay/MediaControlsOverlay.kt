@@ -12,6 +12,8 @@ class MediaControlsOverlay(context: Context, mediaCyclerListener: MediaViewCycle
     private var fadeOutAnimator = fadeOutAnimator(overlayView, 200)
     private var mediaViewCycler: MediaViewCycler = MediaViewCycler(overlayView)
 
+    private var isVisible: Boolean = false
+
     init {
         mediaViewCycler.setMediaListener(mediaCyclerListener)
         mediaViewCycler.setExpirationListener(this)
@@ -22,15 +24,21 @@ class MediaControlsOverlay(context: Context, mediaCyclerListener: MediaViewCycle
     }
 
     fun startCyclingMediaActions() {
-        showOverlay()
-        fadeInAnimator.start()
-        mediaViewCycler.start()
+        if (!isVisible) {
+            isVisible = true
+            showOverlay()
+            fadeInAnimator.start()
+            mediaViewCycler.start()
+        }
     }
 
     fun stopCyclingMediaActions() {
-        mediaViewCycler.stop()
-        fadeOutAnimator.startDelay = 500
-        animateHide()
+        if (isVisible) {
+            mediaViewCycler.stop()
+            fadeOutAnimator.startDelay = 500
+            animateHide()
+            isVisible = false
+        }
     }
 
     override fun onMediaCyclerExpired() {

@@ -27,7 +27,7 @@ class MediaViewCycler(container: View) {
     private val myHandler: Handler = Handler()
     private val transitionTime: Long = 800
     private var actionRequested = false
-    private var cycling = false
+    private var isCycling = false
 
     private var mediaListener: MediaActionListener? = null
     private var expirationListener: ExpirationListener? = null
@@ -72,7 +72,7 @@ class MediaViewCycler(container: View) {
 
     fun start() {
         Log.d(GLOBAL_TAG, "Media Cycler: startCycling")
-        cycling = true
+        isCycling = true
         actionRequested = false
 
         circularProgress.progress = 0f
@@ -82,9 +82,9 @@ class MediaViewCycler(container: View) {
     }
 
     fun stop() {
-        if (cycling) {
+        if (isCycling) {
             Log.d(GLOBAL_TAG, "Media Cycler: stop")
-            cycling = false
+            isCycling = false
             actionRequested = true
 
             circularProgress.setProgressWithAnimation(circularProgress.progress + 10, 50, DecelerateInterpolator() )
@@ -106,7 +106,7 @@ class MediaViewCycler(container: View) {
     }
 
     private fun notifyExpired() {
-        cycling = false
+        isCycling = false
         expirationListener?.onMediaCyclerExpired()
     }
 }
