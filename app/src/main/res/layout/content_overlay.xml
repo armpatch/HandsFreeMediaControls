@@ -36,7 +36,9 @@
             app:cpb_progressbar_color="@color/blue"
             app:cpb_background_progressbar_color="@android:color/transparent"
             app:cpb_progressbar_width="10dp"
-            app:cpb_background_progressbar_width="10dp"/>
+            app:cpb_background_progressbar_width="10dp"
+            app:cpb_round_border="true"
+            />
 
     </FrameLayout>
 

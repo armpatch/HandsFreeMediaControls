@@ -16,7 +16,6 @@ class MediaControlsOverlay(context: Context, mediaCyclerListener: MediaViewCycle
         mediaViewCycler.setMediaListener(mediaCyclerListener)
         mediaViewCycler.setExpirationListener(this)
 
-        fadeOutAnimator.startDelay = 500
         fadeOutAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) { hideOverlay() }
         })
@@ -30,10 +29,12 @@ class MediaControlsOverlay(context: Context, mediaCyclerListener: MediaViewCycle
 
     fun stopCyclingMediaActions() {
         mediaViewCycler.stopCycling()
+        fadeOutAnimator.startDelay = 500
         animateHide()
     }
 
     override fun onMediaCyclerExpired() {
+        fadeOutAnimator.startDelay = 100
         animateHide()
     }
 
