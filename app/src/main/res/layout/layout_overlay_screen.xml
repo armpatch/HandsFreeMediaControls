@@ -45,7 +45,6 @@
             app:cpb_background_progressbar_width="0dp"
             app:cpb_progressbar_color="@android:color/white"
             app:cpb_progressbar_width="5dp"
-            app:cpb_round_border="true"
             tools:cpb_progress="75" />
 
     </FrameLayout>
