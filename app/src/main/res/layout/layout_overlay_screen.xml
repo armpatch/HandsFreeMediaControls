@@ -4,26 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_transparent"
     tools:context=".activity.MainActivity">
 
+    <ImageView
+        android:id="@+id/gradient"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/overlay_gradient"
+        app:layout_constraintBottom_toTopOf="@id/bot_area"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bot_area"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:src="@color/black_80pc_transparent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
     <FrameLayout
+        android:id="@+id/cycler_frame"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_circle" />
-
-        <include
             android:id="@+id/media_action_selector"
-            layout="@layout/component_media_selector"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center" />
@@ -32,13 +41,12 @@
             android:id="@+id/circular_progress_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cpb_progress="50"
-            app:cpb_progressbar_color="@color/blue"
             app:cpb_background_progressbar_color="@android:color/transparent"
-            app:cpb_progressbar_width="10dp"
-            app:cpb_background_progressbar_width="10dp"
+            app:cpb_background_progressbar_width="0dp"
+            app:cpb_progressbar_color="@android:color/white"
+            app:cpb_progressbar_width="5dp"
             app:cpb_round_border="true"
-            />
+            tools:cpb_progress="75" />
 
     </FrameLayout>
 

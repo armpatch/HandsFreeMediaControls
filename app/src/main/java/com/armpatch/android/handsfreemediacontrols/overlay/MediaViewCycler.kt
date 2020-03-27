@@ -13,7 +13,7 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar
 class MediaViewCycler(container: View) {
 
     private val circularProgress: CircularProgressBar = container.findViewById(R.id.circular_progress_bar)
-    private val mediaImage: ImageView = container.findViewById(R.id.media_image_view)
+    private val mediaImage: ImageView = container.findViewById(R.id.media_action_selector)
 
     private val mediaResourcesIds = intArrayOf(
         R.drawable.ic_pause_black_24dp,
