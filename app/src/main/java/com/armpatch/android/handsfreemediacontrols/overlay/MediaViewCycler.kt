@@ -17,10 +17,10 @@ class MediaViewCycler(container: View) {
 
     private val mediaImage: ImageView = container.findViewById(R.id.media_action_selector)
     private val imageResourcesIds = intArrayOf(
-        R.drawable.ic_pause_black_24dp,
-        R.drawable.ic_skip_next_black_24dp,
-        R.drawable.ic_skip_previous_black_24dp,
-        R.drawable.ic_clear_black_24dp
+        R.drawable.ic_play_pause,
+        R.drawable.ic_skip_next,
+        R.drawable.ic_skip_previous,
+        R.drawable.ic_cancel_x
     )
     private var imageIndex = -1
 
