@@ -70,7 +70,7 @@ class MediaViewCycler(container: View) {
 
         imageIndex++
 
-        if (imageIndex < 4) {
+        if (imageIndex < 3) {
             mediaImage.setImageResource(imageResourcesIds[imageIndex])
             Log.d(GLOBAL_TAG, "imageChangingRunnable : set image at index = $imageIndex")
         }
@@ -127,6 +127,7 @@ class MediaViewCycler(container: View) {
             0 -> mediaListener?.onPlayPauseAction()
             1 -> mediaListener?.onNextTrackAction()
             2 -> mediaListener?.onPreviousTrackAction()
+            3 -> fadeOutAnimation.startDelay = 0
         }
         isCycling = false
         fadeOutAnimation.start()
@@ -136,6 +137,7 @@ class MediaViewCycler(container: View) {
         mediaImage.setImageResource(imageResourcesIds[0])
         circularProgress.indeterminateMode = false
         circularProgress.progress = 0f
+        fadeOutAnimation.startDelay = 800
     }
 
 }
