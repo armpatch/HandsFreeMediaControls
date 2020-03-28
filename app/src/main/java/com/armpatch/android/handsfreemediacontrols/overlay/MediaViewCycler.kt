@@ -41,7 +41,7 @@ class MediaViewCycler(container: View) {
                 startCyclingAnimation()
             }
         })
-        fadeOutAnimation.startDelay = 300
+        fadeOutAnimation.startDelay = 800
         fadeOutAnimation.addListener(object: AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
                 reset()
@@ -122,6 +122,7 @@ class MediaViewCycler(container: View) {
     }
 
     private fun sendMediaAction() {
+        Log.d(GLOBAL_TAG, "send media Action, index - $imageIndex")
         when (imageIndex) {
             0 -> mediaListener?.onPlayPauseAction()
             1 -> mediaListener?.onNextTrackAction()
