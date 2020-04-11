@@ -2,15 +2,17 @@
 <resources>
 
     <color name="media_icon_color">@android:color/white</color>
-
-    <color name="light_green">#008577</color>
-    <color name="dark_green">#00574B</color>
-    <color name="red">#D81B60</color>
-    <color name="blue">#42A5F5</color>
-
-    <color name="light_grey">#E9E9E9</color>
+    <color name="off_white">#E9E9E9</color>
 
     <color name="black_40pc_transparent">#66000000</color>
     <color name="black_80pc_transparent">#CC000000</color>
+
+    <!--    palette colors-->
+
+    <color name="dark_purple">#1E152A</color>
+    <color name="dark_green">#4E6766</color>
+    <color name="sky_blue">#5AB1BB</color>
+    <color name="light_green">#A5C882</color>
+    <color name="yellow">#F7DD72</color>
 
 </resources>

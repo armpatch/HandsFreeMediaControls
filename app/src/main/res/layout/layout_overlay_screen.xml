@@ -10,7 +10,7 @@
         android:id="@+id/cycler_frame"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
